@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title= title
+    link(rel="stylesheet" href="/public/style.css")
+  body
+    nav
+      a(href="/") Accueil
+      if user
+        a(href="/auth/logout") Déconnexion
+      else
+        a(href="/auth/login") Connexion
+
+    block content
