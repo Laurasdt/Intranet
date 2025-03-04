@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 Liste des collaborateurs
+
+  if users.length === 0
+    p Aucun collaborateur trouvé.
+
+  .users
+    each user in users
+      .user-card
+        img(src=user.photo alt="Photo de #{user.firstname}")
+        h3 #{user.firstname} #{user.lastname}
+        p #{user.city}, #{user.country}
+        p #{user.phone}
+        p #{user.email}
+        p Service : #{user.category}
