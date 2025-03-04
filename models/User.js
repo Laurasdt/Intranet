@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
   gender: String,
@@ -14,5 +15,17 @@ const UserSchema = new mongoose.Schema({
   category: String,
   isAdmin: { type: Boolean, default: false },
 });
+
+// hache le mdp avant de le stocker
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+// compare le mdp avec celui enregistré
+UserSchema.methods.comparePassword = function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 module.exports = mongoose.model("User", UserSchema);
