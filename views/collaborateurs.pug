@@ -3,12 +3,26 @@ extends layout
 block content
   h1 Liste des collaborateurs
 
-  if users.length === 0
-    p Aucun collaborateur trouvé.
+  .filters
+    label(for="search") Rechercher :
+    input#search(type="text" placeholder="Nom..." oninput="filterUsers()")
 
-  .users
+    label(for="location") Localisation :
+    select#location(onchange="filterUsers()")
+      option(value="") Toutes
+      each user in users
+        option(value=user.city) #{user.city}
+
+    label(for="category") Catégorie :
+    select#category(onchange="filterUsers()")
+      option(value="") Toutes
+      option(value="Marketing") Marketing
+      option(value="Client") Client
+      option(value="Technique") Technique
+
+  .users#userList
     each user in users
-      .user-card
+      .user-card(data-name=user.firstname + " " + user.lastname data-location=user.city data-category=user.category)
         img(src=user.photo alt="Photo de #{user.firstname}")
         h3 #{user.firstname} #{user.lastname}
         p #{user.city}, #{user.country}
