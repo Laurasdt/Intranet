@@ -5,10 +5,10 @@ html
     script(src="/script.js" defer)
   body
     nav
-      a(href="/") Accueil
+      a(href="/") Liste
       if user
         a(href="/auth/logout") Déconnexion
       else
         a(href="/auth/login") Connexion
-
+        a(href="/auth/inscription") Ajouter 
     block content

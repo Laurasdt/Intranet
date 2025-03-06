@@ -1,27 +1,68 @@
-const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 
-exports.loginPage = (req, res) => {
-  res.render("login", { title: "Connexion" });
+console.log("✅ authController.js chargé !");
+
+// page connexion
+const loginPage = (req, res) => {
+  res.render("login");
 };
 
-exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.render("login", {
-      title: "Connexion",
-      error: "Email ou mot de passe incorrect",
-    });
-  }
-
-  req.session.user = user;
-  res.redirect("/");
+// connexion
+const loginUser = (req, res) => {
+  res.send("Connexion réussie");
 };
 
-exports.logoutUser = (req, res) => {
+// logout
+const logoutUser = (req, res) => {
   req.session.destroy(() => {
     res.redirect("/auth/login");
   });
 };
+
+// page inscription
+const signupPage = (req, res) => {
+  res.render("inscription");
+};
+
+// inscription user
+const signupUser = async (req, res) => {
+  const {
+    firstname,
+    lastname,
+    email,
+    password,
+    phone,
+    birthdate,
+    city,
+    country,
+    category,
+  } = req.body;
+  try {
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.render("inscription", {
+        error: "Cet email est déjà utilisé.",
+      });
+    }
+
+    const newUser = new User({
+      firstname,
+      lastname,
+      email,
+      password,
+      phone,
+      birthdate,
+      city,
+      country,
+      category,
+    });
+    await newUser.save();
+
+    res.redirect("/auth/login");
+  } catch (error) {
+    console.error(error);
+    res.render("inscription", { error: "Erreur lors de l'inscription." });
+  }
+};
+
+module.exports = { loginPage, loginUser, logoutUser, signupPage, signupUser };

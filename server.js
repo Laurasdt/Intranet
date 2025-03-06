@@ -1,11 +1,8 @@
 const express = require("express");
-// Ajoute la gestion des sessions pour permettre aux utilisateurs de rester connectés
 const session = require("express-session");
-// Charge les variables d'environnement définies dans .env
+const MongoStore = require("connect-mongo");
 const dotenv = require("dotenv");
-// Permet de gérer les chemins de fichiers, comme views pour les templates Pug
 const path = require("path");
-// Importe la connexion à MongoDB, qui est définie dans config/db.js
 const mongoose = require("./config/db");
 const indexRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
@@ -24,6 +21,8 @@ app.use(
     secret: "secret-key",
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
   })
 );
 

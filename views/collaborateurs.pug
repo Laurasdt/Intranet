@@ -20,12 +20,20 @@ block content
       option(value="Client") Client
       option(value="Technique") Technique
 
-  .users#userList
-    each user in users
-      .user-card(data-name=user.firstname + " " + user.lastname data-location=user.city data-category=user.category)
-        img(src=user.photo alt="Photo de #{user.firstname}")
-        h3 #{user.firstname} #{user.lastname}
-        p #{user.city}, #{user.country}
-        p #{user.phone}
-        p #{user.email}
-        p Service : #{user.category}
+  if users.length === 0
+    p Aucun collaborateur trouvé.
+  else
+    .users#userList
+      each user in users
+        .user-card(data-name=user.firstname + " " + user.lastname data-location=user.city data-category=user.category)
+          img(src=user.photo alt="Photo de #{user.firstname}")
+          h3 #{user.firstname} #{user.lastname}
+          p #{user.city}, #{user.country}
+          p #{user.phone}
+          p #{user.email}
+          p Service : #{user.category}
+
+            //- btn de supp visible uniquement pas admin 
+            if user.isAdmin
+      form(action=`/collaborateurs/${user._id}/delete` method="POST")
+        button(type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')") Supprimer
