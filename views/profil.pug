@@ -1,11 +1,42 @@
 extends layout
 
 block content
-  h1= `${user.firstname} ${user.lastname}`
-  img(src=user.photo alt=`Photo de ${user.firstname}`)
-  p Email: #{user.email}
-  p Téléphone: #{user.phone}
-  p Naissance: #{user.birthdate.toLocaleDateString()}
-  p Ville: #{user.city}
-  p Pays: #{user.country}
-  p Catégorie: #{user.category}
+  h1 Modifier mon profil
+
+  form(action=`/users/${user._id}/edit` method="POST")
+    label(for="gender") * Civilité :
+    select(name="gender" required)
+      option(value="Homme" selected=user.gender==="Homme") Homme
+      option(value="Femme" selected=user.gender==="Femme") Femme
+
+    label(for="category") * Catégorie :
+    select(name="category" required)
+      option(value="Marketing" selected=user.category==="Marketing") Marketing
+      option(value="Client" selected=user.category==="Client") Client
+      option(value="Technique" selected=user.category==="Technique") Technique
+
+    label(for="lastname") * Nom :
+    input(type="text" name="lastname" value=user.lastname required)
+
+    label(for="firstname") * Prénom :
+    input(type="text" name="firstname" value=user.firstname required)
+
+    label(for="email") * Email :
+    input(type="email" name="email" value=user.email required readonly)
+
+    label(for="phone") * Téléphone :
+    input(type="text" name="phone" value=user.phone required)
+
+    label(for="birthdate") * Date de naissance :
+    input(type="date" name="birthdate" value=user.birthdate.toISOString().split('T')[0] required)
+
+    label(for="city") * Ville :
+    input(type="text" name="city" value=user.city required)
+
+    label(for="country") * Pays :
+    input(type="text" name="country" value=user.country required)
+
+    label(for="photo") URL de la photo :
+    input(type="text" name="photo" value=user.photo placeholder="https://")
+
+    button(type="submit") MODIFIER

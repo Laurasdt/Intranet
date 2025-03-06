@@ -2,43 +2,44 @@ extends layout
 
 block content
   h1 Créer un utilisateur 
+
   form(action="/users/create" method="POST")
-    label(for="civility") * Civilité:
-    select(name="civility" required)
-      option(value="Monsieur") Monsieur
-      option(value="Madame") Madame
-    
-    label(for="category") * Catégorie:
+    label(for="gender") * Civilité :
+    select(name="gender" required)
+      option(value="Homme") Homme
+      option(value="Femme") Femme
+
+    label(for="category") * Catégorie :
     select(name="category" required)
       option(value="Marketing") Marketing
       option(value="Client") Client
       option(value="Technique") Technique
-    
-    label(for="lastname") * Nom:
+
+    label(for="lastname") * Nom :
     input(type="text" name="lastname" required)
-    
-    label(for="firstname") * Prénom:
+
+    label(for="firstname") * Prénom :
     input(type="text" name="firstname" required)
-    
-    label(for="email") * Email:
+
+    label(for="email") * Email :
     input(type="email" name="email" required)
-    
-    label(for="password") Mot de passe:
-    input(type="password" name="password" required)
-    
-    label(for="phone") * Téléphone:
-    input(type="text" name="phone")
-    
-    label(for="birthdate") * Date de naissance (jj/mm/aaaa):
-    input(type="date" name="birthdate" pattern="\d{2}/\d{2}/\d{4}" required)
-    
+
+    label(for="password") Mot de passe :
+    input(type="password" name="password" placeholder="(min. 8 caractères)")
+
+    label(for="phone") * Téléphone :
+    input(type="text" name="phone" required)
+
+    label(for="birthdate") * Date de naissance :
+    input(type="date" name="birthdate" required)
+
     label(for="city") * Ville :
-    input(type="text" name="city")
-    
-    label(for="country") * Pays:
-    input(type="text" name="country")
-    
-    label(for="photoUrl") URL de la photo:
-    input(type="url" name="photoUrl")
-    
-    button(type="submit") Ajouter 
+    input(type="text" name="city" required)
+
+    label(for="country") * Pays :
+    input(type="text" name="country" required)
+
+    label(for="photo") URL de la photo :
+    input(type="text" name="photo" placeholder="https://")
+
+    button(type="submit") AJOUTER

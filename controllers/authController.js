@@ -1,6 +1,5 @@
 const User = require("../models/User");
-
-console.log("✅ authController.js chargé !");
+const bcrypt = require("bcryptjs");
 
 // page connexion
 const loginPage = (req, res) => {
@@ -8,8 +7,31 @@ const loginPage = (req, res) => {
 };
 
 // connexion
-const loginUser = (req, res) => {
-  res.send("Connexion réussie");
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      console.log("Aucun utilisateur trouvé pour cet email.");
+      return res.render("login", { error: "Email ou mot de passe incorrect." });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      console.log("mdp incorrect.");
+      return res.render("login", { error: "Email ou mot de passe incorrect." });
+    }
+
+    req.session.user = user;
+    console.log("Connexion réussie !");
+    res.redirect("/");
+  } catch (error) {
+    console.error("Erreur lors de la connexion :", error);
+    res.status(500).send("Erreur serveur");
+  }
 };
 
 // logout
@@ -37,6 +59,7 @@ const signupUser = async (req, res) => {
     country,
     category,
   } = req.body;
+
   try {
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -45,19 +68,20 @@ const signupUser = async (req, res) => {
       });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       firstname,
       lastname,
       email,
-      password,
+      password: hashedPassword,
       phone,
       birthdate,
       city,
       country,
       category,
     });
-    await newUser.save();
 
+    await newUser.save();
     res.redirect("/auth/login");
   } catch (error) {
     console.error(error);

@@ -1,0 +1,10 @@
+nav.navbar
+  .logo Intranet
+  .nav-links
+    a(href="/users") Liste
+    if user
+      a(href="/users/create") Ajouter
+      a(href="/auth/logout") Déconnexion
+      img.profile-picture(src=user.photo alt="Profil")
+    else
+      a(href="/auth/login") Connexion

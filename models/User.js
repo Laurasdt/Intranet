@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
-  gender: String,
   firstname: String,
   lastname: String,
   email: { type: String, unique: true, required: true },
@@ -24,8 +23,8 @@ UserSchema.pre("save", async function (next) {
 });
 
 // compare le mdp avec celui enregistré
-UserSchema.methods.comparePassword = function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+UserSchema.methods.comparePassword = function (password) {
+  return bcrypt.compare(password, this.password);
 };
 
 module.exports = mongoose.model("User", UserSchema);

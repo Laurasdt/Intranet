@@ -3,37 +3,30 @@ extends layout
 block content
   h1 Liste des collaborateurs
 
-  .filters
-    label(for="search") Rechercher :
-    input#search(type="text" placeholder="Nom..." oninput="filterUsers()")
+  .search
+    input#searchInput(type="text" placeholder="Rechercher un nom...")
 
-    label(for="location") Localisation :
-    select#location(onchange="filterUsers()")
-      option(value="") Toutes
-      each user in users
-        option(value=user.city) #{user.city}
-
-    label(for="category") Catégorie :
-    select#category(onchange="filterUsers()")
-      option(value="") Toutes
+    select#categoryFilter(name="category")
+      option(value="") Catégorie : - Tous -
       option(value="Marketing") Marketing
       option(value="Client") Client
       option(value="Technique") Technique
 
-  if users.length === 0
-    p Aucun collaborateur trouvé.
-  else
-    .users#userList
-      each user in users
-        .user-card(data-name=user.firstname + " " + user.lastname data-location=user.city data-category=user.category)
-          img(src=user.photo alt="Photo de #{user.firstname}")
-          h3 #{user.firstname} #{user.lastname}
-          p #{user.city}, #{user.country}
-          p #{user.phone}
-          p #{user.email}
-          p Service : #{user.category}
+  .users#userList
+    each user in users
+      .user-card(data-name=`${user.firstname.toLowerCase()} ${user.lastname.toLowerCase()}` data-category=`${user.category.toLowerCase()}`)
+        img(src=user.photo alt="Photo de #{user.firstname}")
+        h3 #{user.firstname} #{user.lastname} (#{new Date().getFullYear() - new Date(user.birthdate).getFullYear()} ans)
+        p #{user.city}, #{user.country}
+        p
+          a(href="mailto:#{user.email}") #{user.email}
+        p
+          a(href="tel:#{user.phone}") #{user.phone}
+        p Anniversaire : #{new Date(user.birthdate).toLocaleDateString("fr-FR", { day: '2-digit', month: 'long' })}
 
-            //- btn de supp visible uniquement pas admin 
-            if user.isAdmin
-      form(action=`/collaborateurs/${user._id}/delete` method="POST")
-        button(type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')") Supprimer
+        if user.isAdmin
+          //- // Bouton Supprimer visible uniquement pour les administrateurs 
+          form(action=`/users/${user._id}/delete` method="POST")
+            button(type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')") Supprimer
+
+  script(src="/scripts.js")

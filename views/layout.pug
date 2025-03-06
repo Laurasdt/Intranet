@@ -1,14 +1,10 @@
 doctype html
 html
   head
-    title= title
-    script(src="/script.js" defer)
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Intranet
+    link(rel="stylesheet" href="/styles.css")
   body
-    nav
-      a(href="/") Liste
-      if user
-        a(href="/auth/logout") Déconnexion
-      else
-        a(href="/auth/login") Connexion
-        a(href="/auth/inscription") Ajouter 
+    include header
     block content

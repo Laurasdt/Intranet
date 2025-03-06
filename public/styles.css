@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background: #fff;
+}
+
+.navbar {
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.profile-picture {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+h1 {
+  margin-top: 20px;
+  color: #333;
+}
+
+.search {
+  margin: 20px;
+}
+
+.search input,
+.search select {
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.users {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.user-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 250px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-card img {
+  width: 100px;
+  border-radius: 50%;
+}
+
+button {
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
