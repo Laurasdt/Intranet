@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+
 const router = express.Router();
 
 router.get("/login", (req, res) => {
@@ -18,7 +19,6 @@ router.post("/login", async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log("mdp incorrect !");
       return res.render("login", { error: "Email ou mot de passe incorrect." });
     }
 
@@ -27,7 +27,8 @@ router.post("/login", async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
     };
-    console.log("Connexion réussie !");
+
+    console.log("Utilisateur connecté :", req.session.user);
     res.redirect("/users");
   } catch (error) {
     console.error(error);

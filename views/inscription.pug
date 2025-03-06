@@ -24,8 +24,8 @@ block content
     label(for="email") * Email :
     input(type="email" name="email" required)
 
-    label(for="password") Mot de passe :
-    input(type="password" name="password" placeholder="(min. 8 caractères)")
+    label(for="password") * Mot de passe :
+    input(type="password" name="password" required)
 
     label(for="phone") * Téléphone :
     input(type="text" name="phone" required)
@@ -39,7 +39,7 @@ block content
     label(for="country") * Pays :
     input(type="text" name="country" required)
 
-    label(for="photo") URL de la photo :
-    input(type="text" name="photo" placeholder="https://")
+    label(for="isAdmin") Administrateur :
+    input(type="checkbox" name="isAdmin")
 
     button(type="submit") AJOUTER

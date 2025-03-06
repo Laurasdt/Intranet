@@ -3,6 +3,10 @@ extends layout
 block content
   h1 Liste des collaborateurs
 
+  // Bouton "Ajouter un utilisateur" visible uniquement pour les admins
+  if currentUser && currentUser.isAdmin
+    a(href="/users/create" class="btn") Ajouter un utilisateur
+
   .search
     input#searchInput(type="text" placeholder="Rechercher un nom...")
 
@@ -24,8 +28,8 @@ block content
           a(href="tel:#{user.phone}") #{user.phone}
         p Anniversaire : #{new Date(user.birthdate).toLocaleDateString("fr-FR", { day: '2-digit', month: 'long' })}
 
-        if user.isAdmin
-          //- // Bouton Supprimer visible uniquement pour les administrateurs 
+        //- // Afficher le bouton "Supprimer" uniquement si l'utilisateur connecté est admin et que l'utilisateur affiché n'est PAS admin
+        if currentUser && currentUser.isAdmin && !user.isAdmin
           form(action=`/users/${user._id}/delete` method="POST")
             button(type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')") Supprimer
 

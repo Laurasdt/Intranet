@@ -9,41 +9,8 @@ exports.getAllUsers = async (req, res) => {
       title: "Collaborateurs",
       users: users.length > 0 ? users : [],
       message: users.length === 0 ? "Aucun collaborateur trouvé." : "",
+      currentUser: req.session.user,
     });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Erreur serveur");
-  }
-};
-
-// modif user
-exports.updateUser = async (req, res) => {
-  try {
-    const {
-      firstname,
-      lastname,
-      email,
-      phone,
-      birthdate,
-      city,
-      country,
-      category,
-      isAdmin,
-    } = req.body;
-
-    await User.findByIdAndUpdate(req.params.id, {
-      firstname,
-      lastname,
-      email,
-      phone,
-      birthdate,
-      city,
-      country,
-      category,
-      isAdmin: isAdmin === "on",
-    });
-
-    res.redirect("/users");
   } catch (error) {
     console.error(error);
     res.status(500).send("Erreur serveur");
@@ -53,6 +20,10 @@ exports.updateUser = async (req, res) => {
 // création user
 exports.createUser = async (req, res) => {
   try {
+    if (!req.session.user || !req.session.user.isAdmin) {
+      return res.status(403).send("Accès refusé.");
+    }
+
     const {
       firstname,
       lastname,
@@ -65,6 +36,7 @@ exports.createUser = async (req, res) => {
       category,
       isAdmin,
     } = req.body;
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
@@ -91,15 +63,30 @@ exports.createUser = async (req, res) => {
 // supp un user (réservé à admin)
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-
-    // admin ?
-    if (user.isAdmin) {
-      return res.status(400).send("Impossible de supprimer un administrateur.");
+    if (!req.session.user || !req.session.user.isAdmin) {
+      return res.status(403).send("Accès refusé.");
     }
 
-    await User.findByIdAndDelete(req.params.id); // Supp l'utilisateur
-    res.redirect("/users"); // Redirige vers la liste des users
+    const userToDelete = await User.findById(req.params.id);
+
+    if (!userToDelete) {
+      return res.status(404).send("Utilisateur non trouvé.");
+    }
+
+    if (userToDelete._id.toString() === req.session.user.id) {
+      return res
+        .status(400)
+        .send("Vous ne pouvez pas vous supprimer vous-même.");
+    }
+
+    if (userToDelete.isAdmin) {
+      return res
+        .status(400)
+        .send("Impossible de supprimer un autre administrateur.");
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+    res.redirect("/users");
   } catch (error) {
     console.error(error);
     res.status(500).send("Erreur serveur");

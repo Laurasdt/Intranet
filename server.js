@@ -27,24 +27,26 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URI || "mongodb://localhost:27017/intranet",
       collectionName: "sessions",
-      ttl: 24 * 60 * 60, // expire après 24h
+      ttl: 24 * 60 * 60,
       autoRemove: "interval",
-      autoRemoveInterval: 10, // supp les anciennes sessions toutes les 10 minutes
+      autoRemoveInterval: 10,
     }),
     cookie: {
-      secure: false, // ne pas activer HTTPS en local
-      httpOnly: true, // sécurise cookie
-      maxAge: 24 * 60 * 60 * 1000, // expiration 24h
+      secure: false,
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
 
-app.set("view engine", "pug");
-app.set("views", path.join(__dirname, "views"));
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
+  console.log("Utilisateur connecté :", res.locals.user);
   next();
 });
+
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
