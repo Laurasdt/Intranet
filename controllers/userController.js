@@ -25,3 +25,18 @@ exports.deleteUser = async (req, res) => {
     res.status(500).send("Erreur serveur");
   }
 };
+
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(404)
+        .render("error", { message: "Utilisateur non trouvé" });
+    }
+    res.render("profil", { user, title: "Profil du collaborateur" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erreur serveur");
+  }
+};

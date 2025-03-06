@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= `${user.firstname} ${user.lastname}`
+  img(src=user.photo alt=`Photo de ${user.firstname}`)
+  p Email: #{user.email}
+  p Téléphone: #{user.phone}
+  p Naissance: #{user.birthdate.toLocaleDateString()}
+  p Ville: #{user.city}
+  p Pays: #{user.country}
+  p Catégorie: #{user.category}
