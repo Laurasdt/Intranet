@@ -26,6 +26,7 @@ router.post("/create", authMiddleware, createUser);
 // route pour supprimer user
 router.post("/:id/delete", authMiddleware, deleteUser);
 
+// route pour afficher la page d'édition d'un utilisateur
 router.get("/:id/edit", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -34,7 +35,49 @@ router.get("/:id/edit", authMiddleware, async (req, res) => {
     }
     res.render("editUser", { user });
   } catch (error) {
-    console.error(error);
+    console.error("Erreur lors de la récupération de l'utilisateur :", error);
+    res.status(500).send("Erreur serveur");
+  }
+});
+
+// route pour mettre à jour un utilisateur
+router.post("/:id/edit", authMiddleware, async (req, res) => {
+  try {
+    const {
+      gender,
+      category,
+      lastname,
+      firstname,
+      phone,
+      birthdate,
+      city,
+      country,
+      photo,
+    } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        gender,
+        category,
+        lastname,
+        firstname,
+        phone,
+        birthdate,
+        city,
+        country,
+        photo,
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send("Utilisateur non trouvé");
+    }
+
+    res.redirect("/users"); // après modif, redirection vers liste users
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
     res.status(500).send("Erreur serveur");
   }
 });
