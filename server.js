@@ -7,6 +7,7 @@ const mongoose = require("./config/db");
 const indexRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
+const xss = require("xss-clean");
 
 dotenv.config();
 
@@ -15,6 +16,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(xss());
 
 app.use(express.static("public"));
 
