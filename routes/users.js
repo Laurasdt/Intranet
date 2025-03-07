@@ -4,7 +4,8 @@ const {
   deleteUser,
   createUser,
 } = require("../controllers/userController");
-const authMiddleware = require("../middlewares/authMiddleware");
+const authMiddleware = require("../middlewares/authMiddleware"); // vérif si user est co
+const User = require("../models/User");
 
 const router = express.Router();
 
@@ -24,5 +25,18 @@ router.post("/create", authMiddleware, createUser);
 
 // route pour supprimer user
 router.post("/:id/delete", authMiddleware, deleteUser);
+
+router.get("/:id/edit", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).send("Utilisateur non trouvé");
+    }
+    res.render("editUser", { user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erreur serveur");
+  }
+});
 
 module.exports = router;

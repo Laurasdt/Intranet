@@ -28,5 +28,6 @@ block content
         if currentUser && currentUser.isAdmin && !user.isAdmin
           form(action=`/users/${user._id}/delete` method="POST")
             button(type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')") Supprimer
+            a(href=`/users/${user._id}/edit` class="edit-button") Editer
 
   script(src="/scripts.js")

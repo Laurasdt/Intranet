@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-// Config `express-session` avec stockage persistant
+// config `express-session` avec stockage persistant (garde en mémoire les info session user après connexion)
 app.use(
   session({
     secret: process.env.SECRET_KEY || "supersecret",
@@ -39,6 +39,7 @@ app.use(
   })
 );
 
+// middleware pour injecter infos user dans res.locals
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   console.log("Utilisateur connecté :", res.locals.user);
@@ -48,6 +49,7 @@ app.use((req, res, next) => {
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
+// routes
 app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
