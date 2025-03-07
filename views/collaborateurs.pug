@@ -3,10 +3,6 @@ extends layout
 block content
   h1 Liste des collaborateurs
 
-  // Bouton "Ajouter un utilisateur" visible uniquement pour les admins
-  if currentUser && currentUser.isAdmin
-    a(href="/users/create" class="btn") Ajouter un utilisateur
-
   .search
     input#searchInput(type="text" placeholder="Rechercher un nom...")
 
