@@ -92,3 +92,17 @@ exports.deleteUser = async (req, res) => {
     res.status(500).send("Erreur serveur");
   }
 };
+
+exports.getRandomUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    if (users.length === 0) {
+      return res.status(404).json({ error: "Aucun utilisateur trouvé." });
+    }
+    const randomUser = users[Math.floor(Math.random() * users.length)];
+    res.json(randomUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};

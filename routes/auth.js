@@ -14,7 +14,7 @@ router.post(
   [
     body("email").trim().isEmail().withMessage("Email invalide."),
     body("password")
-      .isLength({ min: 8 })
+      .isLength({ min: 5 })
       .withMessage("Mot de passe trop court (min. 8 caractères)."),
   ],
   async (req, res) => {

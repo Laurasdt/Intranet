@@ -1,20 +1,23 @@
 extends layout
 
 block content
-  h1 Bienvenue sur l'intranet
+  .home-page
+    h1 Bienvenue sur l'intranet
 
-  p La plate-forme de l'entreprise qui vous permet de retrouver tous vos collaborateurs.
+    p La plate-forme de l'entreprise qui vous permet de retrouver tous vos collaborateurs.
 
-  h2 Avez-vous dit bonjour à :
-  if user
-    .user-card
-      img(src=user.photo alt="Photo de #{user.firstname}")
-      h3 #{user.firstname} #{user.lastname} (#{user.age} ans)
-      p #{user.city}, #{user.country}
-      p
-        a(href="mailto:#{user.email}") #{user.email}
-      p
-        a(href="tel:#{user.phone}") #{user.phone}
-      p Anniversaire : #{user.birthdate}
+    h2 Avez-vous dit bonjour à :
+    if user
+      .user-card#randomUserCard
+        img#randomUserImg(src=user.photo alt="Photo de #{user.firstname}")
+        h3#randomUserName #{user.firstname} #{user.lastname} (#{user.age} ans)
+        p#randomUserCity #{user.city}, #{user.country}
+        p
+          a#randomUserEmail(href="mailto:#{user.email}") #{user.email}
+        p
+          a#randomUserPhone(href="tel:#{user.phone}") #{user.phone}
+        p#randomUserBirthdate Anniversaire : #{user.birthdate}
 
-  button(onclick="window.location.reload()") DIRE BONJOUR À QUELQU'UN D'AUTRE
+    button#randomUserButton DIRE BONJOUR À QUELQU'UN D'AUTRE
+
+    script(src="/scripts.js")
